@@ -3,6 +3,10 @@ class GradientDescent:
         self.weights = []
         self.min_error = None
 
+    def __del__(self):
+        self.weights = []
+        self.min_error = None
+
     def check_lowest_error(self, error, weights):
         if not self.min_error:
             self.min_error = error
