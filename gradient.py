@@ -29,10 +29,10 @@ class GradientDescent:
 
         for number, instance in enumerate(train_x):
             # looping though each example of the training data
-            instance.insert(0, 1)
+            instance.insert(0, 1)           # this is x0 equivalent to 1
 
             # use the formula: y = b0x0 + b1x1 ... bnxn
-            predicted = 0                           # this is also the predicted
+            predicted = 0                   # this is also the predicted
 
             for index in range(number_of_features):
                 value = weights[index] * instance[index]
@@ -52,13 +52,21 @@ class GradientDescent:
                 weights[i] = new_weight
             print("new weights are: {0}".format(weights))
 
-            # Need to check which weights have smallest error, and save that.
-
-
-
-        print("fit")
-
     def predict(self, test_x):
         # test_x is a list of lists
         # returns y_pred which is a list
-        print("predict")
+        number_of_features = len(test_x[0])
+
+        y_pred = []                         # the list of predictions that we will return
+
+        for number, instance in enumerate(test_x):
+            instance.insert(0, 1)           # this is x0 equivalent to 1
+            predicted = 0
+
+            for index in range(number_of_features):
+                value = self.weights[index] * instance[index]
+                predicted = + value
+            y_pred.append(predicted)
+
+        print("Returning y_pred as: {0}".format(y_pred))
+        return y_pred
