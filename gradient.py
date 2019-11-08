@@ -9,6 +9,7 @@ class GradientDescent:
         # Initialize the weights to be len(train_x[0]) + 1
         number_of_features = len(train_x[0])
         number_of_weights = number_of_features + 1
+        a = 0.1                             # learning rate
         weights = []
         for weight in range(number_of_weights):
             weights[weight] = 0.1
@@ -19,16 +20,26 @@ class GradientDescent:
             instance.insert(0, 1)
 
             # use the formula: y = b0x0 + b1x1 ... bnxn
-            y = 0                           # this is also the predicted
+            predicted = 0                           # this is also the predicted
 
             for index in range(number_of_features):
-                value = weights[0] * instance[0]
-                y = y + value
+                value = weights[index] * instance[index]
+                predicted =+ value
 
-            # Have y at this point, therefore get error
+            # Have y at this point, therefore get error (y-f(x))
             actual = train_y[number]        # this is the actual value for that instance obtained from the tain_y
 
-            
+            error = actual - predicted
+            print("Error for this example is: {0}".format(error))
+
+            # Use Widrow Hoff rule to update weight
+            # new_weight = current_weight + leaning_rate(actual - predicted) * training_example x
+            weights_new = []
+            for i in range(len(weights)):
+                new_weight = weights[1] + a * error * instance[i]
+                weights_new[i] = new_weight
+
+            # Need to check which weights have smallest error, and save that.
 
 
 
