@@ -1,6 +1,16 @@
 class GradientDescent:
     def __init__(self):
+        self.weights = []
+        self.min_error = None
 
+    def check_lowest_error(self, error, weights):
+        if not self.min_error:
+            self.min_error = error
+            self.weights = weights
+        else:
+            if self.min_error > error:
+                self.min_error = error
+                self.weights = weights
 
     def fit(self, train_x, train_y):
         # train_x is a list of lists
@@ -30,6 +40,7 @@ class GradientDescent:
             actual = train_y[number]        # this is the actual value for that instance obtained from the tain_y
 
             error = actual - predicted
+            self.check_lowest_error(error, weights)
             print("Error for this example is: {0}".format(error))
 
             # Use Widrow Hoff rule to update weight
