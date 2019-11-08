@@ -14,12 +14,23 @@ class GradientDescent:
             weights[weight] = 0.1
         print("weights are: {0}".format(weights))
 
-        for instance in train_x:
+        for number, instance in enumerate(train_x):
             # looping though each example of the training data
             instance.insert(0, 1)
 
             # use the formula: y = b0x0 + b1x1 ... bnxn
+            y = 0                           # this is also the predicted
+
+            for index in range(number_of_features):
+                value = weights[0] * instance[0]
+                y = y + value
+
+            # Have y at this point, therefore get error
+            actual = train_y[number]        # this is the actual value for that instance obtained from the tain_y
+
             
+
+
 
         print("fit")
 
