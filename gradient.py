@@ -1,3 +1,17 @@
+import numpy as np
+import logging
+from cloghandler import ConcurrentRotatingFileHandler
+
+logger = logging.getLogger(__name__)
+
+handler = ConcurrentRotatingFileHandler('gradient.log', "a", 1024*1024*1024*3, 1000)
+formatter = logging.Formatter(
+    '%(asctime)s] - %(name)s - %(levelname)s in %(module)s:%(lineno)d:%(funcName)-10s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
+
+
 class GradientDescent:
     def __init__(self):
         self.weights = []
@@ -21,14 +35,18 @@ class GradientDescent:
     def fit(self, train_x, train_y):
         # train_x is a list of lists
         # train_y is a panda Series
+        train_x = train_x.tolist()
+        train_y = train_y.tolist()
 
         # Initialize the weights to be len(train_x[0]) + 1
         number_of_features = len(train_x[0])
         number_of_weights = number_of_features + 1
         a = 0.1                             # learning rate
         weights = []
-        for weight in range(number_of_weights):
-            weights[weight] = 0.1
+
+        # print("number of weights are: {0}".format(number_of_weights))
+        for i in range(number_of_weights):
+            weights.append(0.1)
         print("weights are: {0}".format(weights))
 
         for number, instance in enumerate(train_x):
@@ -59,6 +77,8 @@ class GradientDescent:
     def predict(self, test_x):
         # test_x is a list of lists
         # returns y_pred which is a list
+        test_x = test_x.tolist()
+        print("Using weights: {0} which had an error: {1}".format(self.weights, self.min_error))
         number_of_features = len(test_x[0])
 
         y_pred = []                         # the list of predictions that we will return
