@@ -42,12 +42,11 @@ class GradientDescent:
         number_of_features = len(train_x[0])
         number_of_weights = number_of_features + 1
         a = 0.1                             # learning rate
-        weights = []
 
         # print("number of weights are: {0}".format(number_of_weights))
         for i in range(number_of_weights):
-            weights.append(0.1)
-        print("weights are: {0}".format(weights))
+            self.weights.append(0.1)
+        print("weights are: {0}".format(self.weights))
 
         for number, instance in enumerate(train_x):
             # looping though each example of the training data
@@ -57,22 +56,22 @@ class GradientDescent:
             predicted = 0                   # this is also the predicted
 
             for index in range(number_of_features):
-                value = weights[index] * instance[index]
+                value = self.weights[index] * instance[index]
                 predicted =+ value
 
             # Have y at this point, therefore get error (y-f(x))
             actual = train_y[number]        # this is the actual value for that instance obtained from the tain_y
 
             error = actual - predicted
-            self.check_lowest_error(error, weights)
-            print("Error for this example is: {0}".format(error))
+            # self.check_lowest_error(error, self.weights)
+            # print("Error for this example is: {0}".format(error))
 
             # Use Widrow Hoff rule to update weight
             # new_weight = current_weight + leaning_rate(actual - predicted) * training_example x
-            for i in range(len(weights)):
-                new_weight = weights[1] + a * error * instance[i]
-                weights[i] = new_weight
-            print("new weights are: {0}".format(weights))
+            for i in range(len(self.weights)):
+                new_weight = self.weights[i] + (a * error * instance[i])
+                self.weights[i] = new_weight
+            print("new weights are: {0}".format(self.weights))
 
     def predict(self, test_x):
         # test_x is a list of lists
