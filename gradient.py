@@ -15,22 +15,24 @@ logger.setLevel(logging.DEBUG)
 class GradientDescent:
     def __init__(self):
         self.weights = []
+        self.lowest_weights = []
         self.min_error = None
 
     def __del__(self):
         self.weights = []
+        self.lowest_weights = []
         self.min_error = None
 
     def check_lowest_error(self, error, weights):
         if not self.min_error:
             self.min_error = error
-            self.weights = weights
-            print("Minimum error is now: {0} and using weights: {1}".format(self.min_error, self.weights))
+            self.lowest_weights = weights
+            print("Minimum error is now: {0} and using weights: {1}".format(self.min_error, self.lowest_weights))
         else:
             if self.min_error > error:
                 self.min_error = error
-                self.weights = weights
-                print("Minimum error is now: {0} and using weights: {1}".format(self.min_error, self.weights))
+                self.lowest_weights = weights
+                print("Minimum error is now: {0} and using weights: {1}".format(self.min_error, self.lowest_weights))
 
     def fit(self, train_x, train_y):
         # train_x is a list of lists
@@ -63,7 +65,8 @@ class GradientDescent:
             actual = train_y[number]        # this is the actual value for that instance obtained from the tain_y
 
             error = actual - predicted
-            # self.check_lowest_error(error, self.weights)
+            print("Error for this instance was: {0}".format(error))
+            self.check_lowest_error(error, self.weights)
             # print("Error for this example is: {0}".format(error))
 
             # Use Widrow Hoff rule to update weight
@@ -77,7 +80,7 @@ class GradientDescent:
         # test_x is a list of lists
         # returns y_pred which is a list
         test_x = test_x.tolist()
-        print("Using weights: {0} which had an error: {1}".format(self.weights, self.min_error))
+        print("Using weights: {0} which had an error: {1}".format(self.lowest_weights, self.min_error))
         number_of_features = len(test_x[0])
 
         y_pred = []                         # the list of predictions that we will return
@@ -87,7 +90,7 @@ class GradientDescent:
             predicted = 0
 
             for index in range(number_of_features):
-                value = self.weights[index] * instance[index]
+                value = self.lowest_weights[index] * instance[index]
                 predicted = + value
             y_pred.append(predicted)
 
