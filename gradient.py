@@ -29,7 +29,7 @@ class GradientDescent:
             }
             print("Minimum error is now: {0} and using weights: {1}".format(self.min['error'], self.min['weights']))
         else:
-            if self.min['error'] > error:
+            if abs(self.min['error']) > abs(error):
                 self.min['error'] = error
                 self.min['weights'] = weights
                 print("Minimum error is now: {0} and using weights: {1}".format(self.min['error'], self.min['weights']))
@@ -51,6 +51,7 @@ class GradientDescent:
         print("weights are: {0}".format(self.weights))
 
         for number, instance in enumerate(train_x):
+            weights = self.weights
             # looping though each example of the training data
             instance.insert(0, 1)           # this is x0 equivalent to 1
 
@@ -58,7 +59,7 @@ class GradientDescent:
             predicted = 0                   # this is also the predicted
 
             for index in range(number_of_features):
-                value = self.weights[index] * instance[index]
+                value = weights[index] * instance[index]
                 predicted = predicted + value
 
             # Have y at this point, therefore get error (y-f(x))
@@ -66,14 +67,15 @@ class GradientDescent:
 
             error = actual - predicted
             print("Error for this instance was: {0}".format(error))
-            self.check_lowest_error(error, self.weights)
+            self.check_lowest_error(error, weights)
             # print("Error for this example is: {0}".format(error))
 
             # Use Widrow Hoff rule to update weight
             # new_weight = current_weight + learning_rate(actual - predicted) * training_example x
             for i in range(len(self.weights)):
-                new_weight = self.weights[i] + (a * error * instance[i])
-                self.weights[i] = new_weight
+                new_weight = weights[i] + (a * error * instance[i])
+                weights[i] = new_weight
+            self.weights = weights
             print("new weights are: {0}".format(self.weights))
 
     def predict(self, test_x):
