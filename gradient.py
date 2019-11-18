@@ -1,24 +1,8 @@
-import numpy as np
-import logging
-from cloghandler import ConcurrentRotatingFileHandler
-
-logger = logging.getLogger(__name__)
-
-handler = ConcurrentRotatingFileHandler('gradient.log', "a", 1024*1024*1024*3, 1000)
-formatter = logging.Formatter(
-    '%(asctime)s] - %(name)s - %(levelname)s in %(module)s:%(lineno)d:%(funcName)-10s %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
-
-
 class GradientDescent:
     def __init__(self):
-        self.weights = []
         self.min = None
 
     def __del__(self):
-        self.weights = []
         self.min = None
 
     def check_lowest_error(self, error, weights):
@@ -33,6 +17,8 @@ class GradientDescent:
                 self.min['error'] = error
                 self.min['weights'] = weights
                 print("Minimum error is now: {0} and using weights: {1}".format(self.min['error'], self.min['weights']))
+            else:
+                pass
 
     def fit(self, train_x, train_y):
         # train_x is a list of lists
@@ -43,15 +29,15 @@ class GradientDescent:
         # Initialize the weights to be len(train_x[0]) + 1
         number_of_features = len(train_x[0])
         number_of_weights = number_of_features + 1
+        weights = []
         a = 0.1                             # learning rate
 
         # print("number of weights are: {0}".format(number_of_weights))
         for i in range(number_of_weights):
-            self.weights.append(0.1)
-        print("weights are: {0}".format(self.weights))
+            weights.append(0.1)
+        print("weights are: {0}".format(weights))
 
         for number, instance in enumerate(train_x):
-            weights = self.weights
             # looping though each example of the training data
             instance.insert(0, 1)           # this is x0 equivalent to 1
 
@@ -66,18 +52,20 @@ class GradientDescent:
             actual = train_y[number]        # this is the actual value for that instance obtained from the train_y
 
             error = actual - predicted
-            print("Error for this instance was: {0}".format(error))
+            try:
+                print("Min weights before check {0}".format(self.min['weights']))
+            except Exception as e:
+                pass
             self.check_lowest_error(error, weights)
-            # print("Error for this example is: {0}".format(error))
+            print("Min weights after check {0}".format(self.min['weights']))
 
             # Use Widrow Hoff rule to update weight
             # new_weight = current_weight + learning_rate(actual - predicted) * training_example x
-            for i in range(len(self.weights)):
-                new_weight = weights[i] + (a * error * instance[i])
-                weights[i] = new_weight
-            self.weights = weights
+            for i in range(len(weights)):
+                weights[i] = weights[i] + (a * error * instance[i])
+
             print("Min weights are: {0}".format(self.min['weights']))
-            print("new weights are: {0}".format(self.weights))
+            print("new weights are: {0}".format(weights))
 
     def predict(self, test_x):
         # test_x is a list of lists
