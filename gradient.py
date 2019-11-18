@@ -76,6 +76,7 @@ class GradientDescent:
                 new_weight = weights[i] + (a * error * instance[i])
                 weights[i] = new_weight
             self.weights = weights
+            print("Min weights are: {0}".format(self.min['weights']))
             print("new weights are: {0}".format(self.weights))
 
     def predict(self, test_x):
