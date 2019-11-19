@@ -1,9 +1,11 @@
 class GradientDescent:
     def __init__(self):
         self.min = None
+        self.weights = []
 
     def __del__(self):
         self.min = None
+        self.weights = []
 
     def check_lowest_error(self, error, weights):
         if not self.min:
@@ -20,7 +22,7 @@ class GradientDescent:
             else:
                 pass
 
-    def fit(self, train_x, train_y, epochs=500):
+    def fit(self, train_x, train_y, epochs=1000):
         # train_x is a list of lists
         # train_y is a panda Series
         train_x = train_x.tolist()
@@ -29,13 +31,12 @@ class GradientDescent:
         # Initialize the weights to be len(train_x[0]) + 1
         number_of_features = len(train_x[0])
         number_of_weights = number_of_features + 1
-        weights = []
         a = 0.001                             # learning rate
 
         # print("number of weights are: {0}".format(number_of_weights))
         for i in range(number_of_weights):
-            weights.append(0.1)
-        print("weights are: {0}".format(weights))
+            self.weights.append(0.1)
+        print("weights are: {0}".format(self.weights))
 
         for epoch in range(epochs):
 
@@ -47,27 +48,27 @@ class GradientDescent:
                 predicted = 0                   # this is also the predicted
 
                 for index in range(number_of_features):
-                    value = weights[index] * instance[index]
+                    value = self.weights[index] * instance[index]
                     predicted = predicted + value
 
                 # Have y at this point, therefore get error (y-f(x))
                 actual = train_y[number]        # this is the actual value for that instance obtained from the train_y
 
                 error = actual - predicted
-                self.check_lowest_error(error, weights)
+                self.check_lowest_error(error, self.weights)
 
                 # Use Widrow Hoff rule to update weight
                 # new_weight = current_weight + learning_rate(actual - predicted) * training_example x
-                for i in range(len(weights)):
-                    weights[i] = weights[i] + (a * error * instance[i])
+                for i in range(len(self.weights)):
+                    self.weights[i] = self.weights[i] + (a * error * instance[i])
 
-            print("new weights at epoch: {0}, are: {1}".format(epoch, weights))
+            print("new weights at epoch: {0}, are: {1}".format(epoch, self.weights))
 
     def predict(self, test_x):
         # test_x is a list of lists
         # returns y_pred which is a list
         test_x = test_x.tolist()
-        print("Using weights: {0} which had an error: {1}".format(self.min['weights'], self.min['error']))
+        print("Using weights: {0} which had an error: {1}".format(self.weights, self.min['error']))
         number_of_features = len(test_x[0])
 
         y_pred = []                         # the list of predictions that we will return
@@ -77,7 +78,7 @@ class GradientDescent:
             predicted = 0
 
             for index in range(number_of_features):
-                value = self.min['weights'][index] * instance[index]
+                value = self.weights[index] * instance[index]
                 predicted = + value
             y_pred.append(predicted)
 
