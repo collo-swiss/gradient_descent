@@ -15,7 +15,7 @@ class GradientDescent:
         else:
             if abs(self.min['error']) > abs(error):
                 self.min['error'] = error
-                self.min['weights'] = weights
+                self.min['weights'] = list(weights)
                 print("Minimum error is now: {0} and using weights: {1}".format(self.min['error'], self.min['weights']))
             else:
                 pass
@@ -30,7 +30,7 @@ class GradientDescent:
         number_of_features = len(train_x[0])
         number_of_weights = number_of_features + 1
         weights = []
-        a = 0.1                             # learning rate
+        a = 0.02                             # learning rate
 
         # print("number of weights are: {0}".format(number_of_weights))
         for i in range(number_of_weights):
@@ -52,19 +52,13 @@ class GradientDescent:
             actual = train_y[number]        # this is the actual value for that instance obtained from the train_y
 
             error = actual - predicted
-            try:
-                print("Min weights before check {0}".format(self.min['weights']))
-            except Exception as e:
-                pass
             self.check_lowest_error(error, weights)
-            print("Min weights after check {0}".format(self.min['weights']))
 
             # Use Widrow Hoff rule to update weight
             # new_weight = current_weight + learning_rate(actual - predicted) * training_example x
             for i in range(len(weights)):
                 weights[i] = weights[i] + (a * error * instance[i])
 
-            print("Min weights are: {0}".format(self.min['weights']))
             print("new weights are: {0}".format(weights))
 
     def predict(self, test_x):
