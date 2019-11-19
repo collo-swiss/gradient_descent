@@ -20,7 +20,7 @@ class GradientDescent:
             else:
                 pass
 
-    def fit(self, train_x, train_y):
+    def fit(self, train_x, train_y, epochs=500):
         # train_x is a list of lists
         # train_y is a panda Series
         train_x = train_x.tolist()
@@ -30,36 +30,38 @@ class GradientDescent:
         number_of_features = len(train_x[0])
         number_of_weights = number_of_features + 1
         weights = []
-        a = 0.02                             # learning rate
+        a = 0.001                             # learning rate
 
         # print("number of weights are: {0}".format(number_of_weights))
         for i in range(number_of_weights):
             weights.append(0.1)
         print("weights are: {0}".format(weights))
 
-        for number, instance in enumerate(train_x):
-            # looping though each example of the training data
-            instance.insert(0, 1)           # this is x0 equivalent to 1
+        for epoch in range(epochs):
 
-            # use the formula: y = b0x0 + b1x1 ... bnxn
-            predicted = 0                   # this is also the predicted
+            for number, instance in enumerate(train_x):
+                # looping though each example of the training data
+                instance.insert(0, 1)           # this is x0 equivalent to 1
 
-            for index in range(number_of_features):
-                value = weights[index] * instance[index]
-                predicted = predicted + value
+                # use the formula: y = b0x0 + b1x1 ... bnxn
+                predicted = 0                   # this is also the predicted
 
-            # Have y at this point, therefore get error (y-f(x))
-            actual = train_y[number]        # this is the actual value for that instance obtained from the train_y
+                for index in range(number_of_features):
+                    value = weights[index] * instance[index]
+                    predicted = predicted + value
 
-            error = actual - predicted
-            self.check_lowest_error(error, weights)
+                # Have y at this point, therefore get error (y-f(x))
+                actual = train_y[number]        # this is the actual value for that instance obtained from the train_y
 
-            # Use Widrow Hoff rule to update weight
-            # new_weight = current_weight + learning_rate(actual - predicted) * training_example x
-            for i in range(len(weights)):
-                weights[i] = weights[i] + (a * error * instance[i])
+                error = actual - predicted
+                self.check_lowest_error(error, weights)
 
-            print("new weights are: {0}".format(weights))
+                # Use Widrow Hoff rule to update weight
+                # new_weight = current_weight + learning_rate(actual - predicted) * training_example x
+                for i in range(len(weights)):
+                    weights[i] = weights[i] + (a * error * instance[i])
+
+            print("new weights at epoch: {0}, are: {1}".format(epoch, weights))
 
     def predict(self, test_x):
         # test_x is a list of lists
