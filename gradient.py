@@ -39,14 +39,17 @@ class GradientDescent:
         print("weights are: {0}".format(self.weights))
 
         for epoch in range(epochs):
+            weights_updates = []                # Store total updates for each weight per epoch
+            for i in range(number_of_weights):
+                weights_updates.append(0)
 
             for number, instance in enumerate(train_x):
+                predicted = 0                   # this is also the predicted
+
                 # looping though each example of the training data
                 instance.insert(0, 1)           # this is x0 equivalent to 1
 
                 # use the formula: y = b0x0 + b1x1 ... bnxn
-                predicted = 0                   # this is also the predicted
-
                 for index in range(number_of_features):
                     value = self.weights[index] * instance[index]
                     predicted = predicted + value
@@ -60,8 +63,11 @@ class GradientDescent:
                 # Use Widrow Hoff rule to update weight
                 # new_weight = current_weight + learning_rate(actual - predicted) * training_example x
                 for i in range(len(self.weights)):
-                    self.weights[i] = self.weights[i] + (a * error * instance[i])
-
+                    update = error * instance[i]
+                    # self.weights[i] = self.weights[i] + (a * error * instance[i])
+                    weights_updates[i] += update
+            for j in range(len(self.weights)):
+                self.weights[j] = self.weights[j] + weights_updates[j]
             print("new weights at epoch: {0}, are: {1}".format(epoch, self.weights))
 
     def predict(self, test_x):
