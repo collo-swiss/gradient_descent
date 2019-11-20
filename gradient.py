@@ -25,7 +25,7 @@ class GradientDescent:
     def fit(self, train_x, train_y, epochs=1000):
         # train_x is a list of lists
         # train_y is a panda Series
-        train_x = train_x.values.tolist()
+        train_x = train_x.tolist()
         train_y = train_y.tolist()
 
         # Initialize the weights to be len(train_x[0]) + 1
@@ -67,7 +67,7 @@ class GradientDescent:
     def predict(self, test_x):
         # test_x is a list of lists
         # returns y_pred which is a list
-        test_x = test_x.values.tolist()
+        test_x = test_x.tolist()
         print("Using weights: {0} which had an error: {1}".format(self.weights, self.min['error']))
         number_of_features = len(test_x[0])
 
