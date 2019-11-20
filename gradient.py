@@ -31,7 +31,7 @@ class GradientDescent:
         # Initialize the weights to be len(train_x[0]) + 1
         number_of_features = len(train_x[0])
         number_of_weights = number_of_features + 1
-        a = 0.001                             # learning rate
+        a = 0.0001                             # learning rate
 
         # print("number of weights are: {0}".format(number_of_weights))
         for i in range(number_of_weights):
@@ -66,8 +66,9 @@ class GradientDescent:
                     update = error * instance[i]
                     # self.weights[i] = self.weights[i] + (a * error * instance[i])
                     weights_updates[i] += update
+                print("Weight updates are: {0}".format(weights_updates))
             for j in range(len(self.weights)):
-                self.weights[j] = self.weights[j] + weights_updates[j]
+                self.weights[j] = self.weights[j] + a * weights_updates[j]
             print("new weights at epoch: {0}, are: {1}".format(epoch, self.weights))
 
     def predict(self, test_x):
