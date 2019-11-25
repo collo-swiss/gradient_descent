@@ -7,17 +7,19 @@ class GradientDescent:
         self.min = None
         self.weights = []
 
-    def check_lowest_error(self, error, weights):
+    def check_lowest_error(self, error, weights, epoch):
         if not self.min:
             self.min = {
                 "error": error,
-                "weights": weights
+                "weights": weights,
+                "epoch": epoch
             }
             print("Minimum error is now: {0} and using weights: {1}".format(self.min['error'], self.min['weights']))
         else:
             if abs(self.min['error']) > abs(error):
                 self.min['error'] = error
                 self.min['weights'] = list(weights)
+                self.min['epoch'] = epoch
                 print("Minimum error is now: {0} and using weights: {1}".format(self.min['error'], self.min['weights']))
             else:
                 pass
@@ -58,7 +60,7 @@ class GradientDescent:
                 actual = train_y[number]        # this is the actual value for that instance obtained from the train_y
 
                 error = actual - predicted
-                self.check_lowest_error(error, self.weights)
+                self.check_lowest_error(error, self.weights, epoch)
 
                 # Use Widrow Hoff rule to update weight
                 # new_weight = current_weight + learning_rate(actual - predicted) * training_example x
@@ -75,7 +77,8 @@ class GradientDescent:
         # test_x is a list of lists
         # returns y_pred which is a list
         test_x = test_x.values.tolist()
-        print("Using weights: {0} which had an error: {1}".format(self.weights, self.min['error']))
+        print("Using weights: {0}, the minimum error during training was: {1} at epoch: {2}".format(
+            self.weights, self.min['error'], self.min['epoch']))
         number_of_features = len(test_x[0])
 
         y_pred = []                         # the list of predictions that we will return
